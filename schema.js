@@ -11,7 +11,7 @@ const loadedTypes = loadFilesSync(`${__dirname}/**/*.typeDefs.js`);
 // const printedTypeDefs = print(loadedTypes)
 // console.log(printedTypeDefs);
 
-const loadedResolvers = loadFilesSync(`${__dirname}/**/*.{queries,mutations}.js`)
+const loadedResolvers = loadFilesSync(`${__dirname}/**/*.resolvers.js`)
 
 const typeDefs = mergeTypeDefs(loadedTypes)
 const resolvers = mergeResolvers(loadedResolvers)
