@@ -23,13 +23,13 @@ export default {
         });
         console.log(checkExist);
         if (checkExist) {
-          throw new Error('username/email already teken');
+          throw new Error('username/email already taken');
         }
 
         //  hash password
         const saltRounds = 10;
         const hashPassword = await bcrypt.hash(password, saltRounds);
-        return client.user.create({
+        const userRes = await client.user.create({
           data: {
             firstName,
             lastName,
@@ -38,6 +38,16 @@ export default {
             password: hashPassword,
           },
         });
+        if(!userRes){
+          return {
+            ok: false,
+            error: "Can't create the user"
+          }
+        }
+      return {
+          ok: true,
+          message: "User Created successfully"
+        }
       } catch (error) {
         return error;
       }

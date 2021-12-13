@@ -1,24 +1,65 @@
-import client from '../../client'
-
+import client from '../../client';
+import bcrypt from 'bcrypt';
+import { authResolver, saveFiles } from '../users.utils';
+const { GraphQLUpload } = require('graphql-upload');
+import { createWriteStream } from 'fs';
+import { finished } from 'stream/promises';
+import shortId from 'shortid';
 export default {
-    Mutation: {
-        editProfile: async(_,{firstName,lastName,email,password,userName}) => {
-            try {
-                const editRes = await client.user.update({
-                    where:{
-                        email
-                    },
-                    data :{
-                        firstName,
-                        lastName,
-                        email,
-                        password,
-                        username
-                    }
-                })
-            } catch (error) {
-                return error
-            }
+  Upload: GraphQLUpload,
+  Mutation: {
+    editProfile: authResolver(
+      async (
+        _,
+        {
+          firstName,
+          lastName,
+          email,
+          password: userPassword,
+          username,
+          bio,
+          avatar,
+        },
+        { loginUser }
+      ) => {
+        try {
+          let hashPassword = null;
+          let fileUrl = null;
+          if (avatar) {
+            const url = await saveFiles(avatar);
+            fileUrl = `${process.env.API_URL}/${url}`
+          }
+          if (userPassword) {
+            hashPassword = await bcrypt.hash(userPassword, 10);
+          }
+          const updatedUser = await client.user.update({
+            where: {
+              id: loginUser.id,
+            },
+            data: {
+              firstName,
+              lastName,
+              email,
+              username,
+              bio,
+              ...(hashPassword && { password: hashPassword }),
+              ...(fileUrl && {avatar: fileUrl})
+            },
+          });
+          if (!updatedUser) {
+            return {
+              ok: false,
+              error: "Something went wrong user can't be updated, try again",
+            };
+          } else {
+            return {
+              ok: true,
+            };
+          }
+        } catch (error) {
+          return error;
         }
-    }
-}
+      }
+    ),
+  },
+};
