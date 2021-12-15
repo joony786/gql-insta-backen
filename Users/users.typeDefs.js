@@ -12,6 +12,10 @@ type User {
     avatar: Upload
     createdAt: String!
     updatedAt: String!
+    totalFollowings: Int
+    totalFollowers: Int
+    isMe:Boolean
+    isFollowing:Boolean
   }
 
 

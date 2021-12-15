@@ -21,14 +21,16 @@ export default {
             ],
           },
         });
-        console.log(checkExist);
-        if (checkExist) {
-          throw new Error('username/email already taken');
+        if (checkExist?.email === email) {
+          throw new Error('email already taken');
         }
-
+        if (checkExist?.username === username) {
+          throw new Error('username already taken');
+        }
         //  hash password
         const saltRounds = 10;
         const hashPassword = await bcrypt.hash(password, saltRounds);
+         // save the user and return it
         const userRes = await client.user.create({
           data: {
             firstName,
@@ -38,20 +40,20 @@ export default {
             password: hashPassword,
           },
         });
-        if(!userRes){
+        if (!userRes) {
           return {
             ok: false,
-            error: "Can't create the user"
-          }
+            error: "Can't create the user",
+          };
         }
-      return {
+        return {
           ok: true,
-          message: "User Created successfully"
-        }
+          message: 'User Created successfully',
+        };
       } catch (error) {
         return error;
       }
-      // save the user and return it
+     
     },
   },
 };

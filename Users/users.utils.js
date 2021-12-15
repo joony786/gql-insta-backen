@@ -20,7 +20,7 @@ export const getUser = async (token) => {
 };
 
 export const authResolver = (ourProvider) => (root, args, context, info) => {
-  if (!context.loginUser) {
+  if (!context.currentUser) {
     return {
       ok: false,
       error: 'Login to perform this action',

@@ -20,7 +20,7 @@ export default {
           bio,
           avatar,
         },
-        { loginUser }
+        { currentUser }
       ) => {
         try {
           let hashPassword = null;
@@ -34,7 +34,7 @@ export default {
           }
           const updatedUser = await client.user.update({
             where: {
-              id: loginUser.id,
+              id: currentUser.id,
             },
             data: {
               firstName,

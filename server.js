@@ -22,9 +22,14 @@ async function startServer() {
     schema,
     context: async ({ req }) => {
       return {
-        loginUser: await getUser(req.headers.jwt_token),
+        currentUser: await getUser(req.headers.jwt_token),
       };
     },
+    exclude: { 
+      user: {
+        password: true 
+      }
+    }
   });
 
   await server.start();
