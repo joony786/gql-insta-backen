@@ -2,6 +2,11 @@ import { gql } from 'apollo-server';
 
 export default gql `
 scalar Upload
+type PhotosRes {
+  ok: Boolean
+  error: String
+  photos: [Photo]
+}
 type User {
     id: String!
     firstName: String!
@@ -16,6 +21,7 @@ type User {
     totalFollowers: Int
     isMe:Boolean
     isFollowing:Boolean
+    photos(perPage:Int!,lastId:Int): PhotosRes!
   }
 
 

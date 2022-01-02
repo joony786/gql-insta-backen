@@ -27,7 +27,7 @@ export default {
           .photos({
             take: perPage,
             skip: lastId ? 1 : 0,
-            ...(lastId && { cursor: { id: perPage } }),
+            ...(lastId && { cursor: { id: lastId } }),
           });
         return {
           ok: true,
