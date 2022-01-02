@@ -25,11 +25,6 @@ async function startServer() {
         currentUser: await getUser(req.headers.jwt_token),
       };
     },
-    exclude: { 
-      user: {
-        password: true 
-      }
-    }
   });
 
   await server.start();

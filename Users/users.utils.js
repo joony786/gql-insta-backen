@@ -20,6 +20,7 @@ export const getUser = async (token) => {
 };
 
 export const authResolver = (ourProvider) => (root, args, context, info) => {
+  console.log('inside auth');
   if (!context.currentUser) {
     return {
       ok: false,

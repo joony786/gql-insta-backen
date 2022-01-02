@@ -2,9 +2,7 @@ import client from '../../client';
 import bcrypt from 'bcrypt';
 import { authResolver, saveFiles } from '../users.utils';
 const { GraphQLUpload } = require('graphql-upload');
-import { createWriteStream } from 'fs';
-import { finished } from 'stream/promises';
-import shortId from 'shortid';
+
 export default {
   Upload: GraphQLUpload,
   Mutation: {
