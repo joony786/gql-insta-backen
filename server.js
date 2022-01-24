@@ -34,6 +34,7 @@ async function startServer() {
   app.use(logger('tiny'))
   server.applyMiddleware({ app });
   app.use("/assets",express.static("assets"))
+  
   await new Promise (r => app.listen({ port: 4000 }, r));
   console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`);
 }

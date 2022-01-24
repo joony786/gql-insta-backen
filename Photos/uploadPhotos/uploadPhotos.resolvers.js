@@ -1,5 +1,6 @@
 import client from '../../client';
 import { authResolver } from '../../Users/users.utils';
+import { returnHashTags } from '../photos.utils';
 
 export default {
   Mutation: {
@@ -7,13 +8,8 @@ export default {
       console.log("running");
       try {
         let hashObj = [];
-        console.log(currentUser.id);
         if (caption) {
-          const parsed = caption.match(/#[\w]+/g);
-          hashObj = parsed.map(hashtag => ({
-            where: { hashtag },
-            create: { hashtag },
-          }));
+         hashObj = returnHashTags(caption)
         }
         const res = await client.photo.create({
           data: {
